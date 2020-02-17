@@ -1354,7 +1354,7 @@
     _updateMeasureLabel: function (layer, e) {
       var center = layer.getCenter();
       //       var latlngs = layer.editor.getLatLngs()[0];
-      var areaText = 'Площадь: ' + this.getAreaText(layer);
+      var areaText = 'Area: ' + this.getAreaText(layer);
       areaText = '<b>' + areaText + '</b>';
       this._showLabel(layer, areaText, center);
     },
