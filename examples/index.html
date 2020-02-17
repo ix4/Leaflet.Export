@@ -44,26 +44,26 @@
 
   <div id='map'></div>
 
-  <button id="measureMarkerBtn" onclick="measure.markerBaseTool.startMeasure({title:'Точка'});">Измерить координаты</button>
-  <button id="measureRectangleBtn" onclick="measure.rectangleBaseTool.startMeasure();">Измерить прямоугольник</button>
-  <button id="measureCircleBtn" onclick="measure.circleBaseTool.startMeasure();">Измерить круг</button>
-  <button id="measurePolilineBtn" onclick="measure.polylineBaseTool.startMeasure();">Измерить ломаную</button>
-  <button id="measurePolygonBtn" onclick="measure.polygonBaseTool.startMeasure();">Измерить многоугольник</button>
-  <button id="measurePolygonBtn" onclick="exportMap()">Экспорт</button>
+  <button id="measureMarkerBtn" onclick="measure.markerBaseTool.startMeasure({title:'Point'});">Measure Coordinates</button>
+  <button id="measureRectangleBtn" onclick="measure.rectangleBaseTool.startMeasure();">Measure rectangle</button>
+  <button id="measureCircleBtn" onclick="measure.circleBaseTool.startMeasure();">Measure circle</button>
+  <button id="measurePolilineBtn" onclick="measure.polylineBaseTool.startMeasure();">Measure broken line</button>
+  <button id="measurePolygonBtn" onclick="measure.polygonBaseTool.startMeasure();">Measure polygon</button>
+  <button id="measurePolygonBtn" onclick="exportMap()">Export</button>
 
   <br>
-  <button id="exportBtn" onclick="downloadMap();">Экспорт в изображение без заголовка</button>
-  <button id="exportWithCaptionBtn" onclick="downloadMap('My leaflet map');">Экспорт в изображение с заголовком</button>
-  <button id="printBtn" onclick="printMap();">Печать без заголовка</button>
-  <button id="printWithCaptionBtn" onclick="printMap('My leaflet map');">Печать с заголовком</button>
-  <div><b>Поддерживаемые типы изображений:</b>&nbsp;<i><span id='suportedMimeTypes'></span></i></div>
+  <button id="exportBtn" onclick="downloadMap();">Export to image without title</button>
+  <button id="exportWithCaptionBtn" onclick="downloadMap('My leaflet map');">Export with caption</button>
+  <button id="printBtn" onclick="printMap();">Print without title</button>
+  <button id="printWithCaptionBtn" onclick="printMap('My leaflet map');">Print with caption</button>
+  <div><b>Supported Image Types:</b>&nbsp;<i><span id='suportedMimeTypes'></span></i></div>
   <script>
-    var centerPoint = [58.0060984592271, 56.2445307230809];
+    var centerPoint = [40.75889500,-73.98513100];
 
     // Create leaflet map.
     var baseExportOptions = {
       caption: {
-        text: 'Карта',
+        text: 'Map',
         font: '30px Arial',
         fillStyle: 'black',
         position: [100, 200]
@@ -93,7 +93,7 @@
       var exportOptions = {
         container: map._container,
         caption: {
-          text: 'Карта',
+          text: 'Map',
           font: '30px Arial',
           fillStyle: 'black',
           position: [100, 200]

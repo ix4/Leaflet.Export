@@ -1,6 +1,6 @@
 (function (L, undefined) {
   /**
-   * Базовое пространство имен для инструментов измерений.
+   * Base namespace for measurement tools.
    */
   L.Measure = L.Class.extend({
     initialize: function (map, options) {
@@ -41,7 +41,7 @@
   });
 
   /*
-   Фабричный метод для создания базового экземпляра.
+   The factory method for creating the base instance.
    */
   L.measure = function (map, options) {
     return new L.Measure(map, options);
@@ -69,18 +69,18 @@
   }());
 
   /**
-   * Примесь, переопределяющая базовые методы инструментов плагина Leaflet.Editable, превращая их в инструменты измерений.
+   * An admixture that overrides the basic methods of the Leaflet.Editable plugin tools, turning them into measurement tools.
    */
   L.Measure.Mixin = {
 
     /**
-     * Количество знаков после десятичного разделителя для измерений в метрах.
+     * The number of characters after the decimal separator for measurements in meters.
      */
     precision: 2,
 
     /**
-    Инициализирует новый инструмент измерений.
-    @param {Object} map Используемая карта.
+    Initializes a new measurement tool.
+    @param {Object} map Card used.
      */
     initialize: function (map, options) {
       this._map = map;
@@ -136,9 +136,9 @@
     },
 
     /**
-      Метод для обновления лейблов, содержащих результаты измерений.
-      @param {Object} e Событие.
-      @param {Object} layer Редактируемый слой.
+      Method for updating labels containing measurement results.
+      @param {Object} e Event.
+      @param {Object} layer Editable layer.
       */
     _updateLabels: function (e) {
       var layer = e.layer;
@@ -158,7 +158,7 @@
         this._showLabel(marker, labelText, latlng);
       }
 
-      //Обновить tooltip измеряемого объекта
+      //Update tooltip of the measured object
       this._updateMeasureLabel(layer, e);
     },
 
@@ -178,15 +178,15 @@
     },
 
     /**
-    Метод обновления основного лейбла измеряемого объекта
-    @param {Object} layer Редактируемый слой.
+    Method for updating the main label of the measured object
+    @param {Object} layer Editable layer.
     */
     _updateMeasureLabel: function (layer, e) {},
 
 
     /**
-      Обработчик события, сигнализирующего о перемещении курсора мыши, во время отрисовки измерений.
-      @param {String} text Отображаемый текст.
+      The handler of the event that signals the movement of the mouse cursor during drawing measurements.
+      @param {String} text The text to display.
       */
     _onMouseMove: function (e, text) {
       this._showPopup(text, e.latlng);
@@ -214,7 +214,7 @@
     },
 
     /**
-    Обработчик события, сигнализирующий о редактировании слоя.
+    An event handler that signals layer editing.
      */
     _fireEvent: function (e, type) {
       var layer = e.layer;
@@ -287,28 +287,28 @@
   };
 
   /**
-  Миксины для методов работы с объектами
-  Дерево миксинов повторяет дерево классов объектов Leaflet 1.0.0-rc3
+  Mixins for methods of working with objects
+  The mixin tree repeats the Leaflet 1.0.0-rc3 feature class tree
   L.Layer +-> L.Marker
           +-> L.Path +-> L.Polyline -> L.Polygon -> L.Rectangle
                      +->L.CircleMarker -> L.Circle
    */
 
   /**
-    Примесь, обеспечивающая поддержку основных методов редактирования маркера
+    Admixture providing support for basic marker editing methods
   */
   L.Measure.Mixin.Marker = {
 
     distanceMeasureUnit: {
-      meter: ' м',
-      kilometer: ' км'
+      meter: ' m',
+      kilometer: ' km'
     },
 
     /**
-      Приводит значение координат точки, которые могут принимать любые действительные значения,
-      к значениям, лежещим в отрезках [-90; 90], для широты, [-180, 180] для долготы.
-      @param {Object} latlng Точка, содержащая координаты.
-      @returns {Number} Точка со скорректированными координатами.
+      It leads the value of the coordinates of the point, which can take any real value,
+      to the values lying in the segments [-90; 90], for latitude, [-180, 180] for longitude.
+      @param {Object} latlng Point containing coordinates.
+      @returns {Number} Point with adjusted coordinates.
     */
     getFixedLatLng: function (latlng) {
       var getFixedCoordinate = function (coordinate, periodRadius) {
@@ -322,11 +322,11 @@
     },
 
     /**
-      Получить текстовое представление произведенных измерений.
-      @param {Object} e Аргументы метода.
-      @param {Object} e.value Результат измерений в метрах.
-      @param {Object} e.dimension Размерность измерений (1 - линейные расстояния, 2- площади).
-      @returns {string} Текстовое представление произведенных измерений.
+      Get a textual representation of the measurements taken.
+      @param {Object} e Method arguments.
+      @param {Object} e.value Measurement result in meters.
+      @param {Object} e.dimension Dimension of measurements (1 - linear distances, 2 - areas).
+      @returns {string} Textual representation of the measurements taken.
     */
     getMeasureText: function (e) {
       var value = parseFloat(e.value.toFixed(this.precision));
@@ -343,22 +343,22 @@
     },
 
     /**
-      Вычисляет расстояние между двумя точками (в метрах) с заданной точностью.
-      @param {Object} e Аргументы метода.
-      @param {Object} e.latlng1 Первая точка.
-      @param {Object} e.latlng2 Вторая точка.
-      @returns {Number} Полученное расстояние (в метрах).
+      Calculates the distance between two points (in meters) with a given accuracy.
+      @param {Object} e Arguments of the method.
+      @param {Object} e.latlng1 First point.
+      @param {Object} e.latlng2 Second point.
+      @returns {Number} Received distance (in meters).
     */
     getDistance: function (e) {
       return parseFloat(e.latlng1.distanceTo(e.latlng2).toFixed(this.precision));
     },
 
     /**
-      Вычисляет расстояние между двумя точками и возвращает его текстовое представление с заданной точностью.
-      @param {Object} e Аргументы метода.
-      @param {Object} e.latlng1 Первая точка.
-      @param {Object} e.latlng2 Вторая точка.
-      @returns {String} Текстовое представление расстояния.
+      Calculates the distance between two points and returns its textual representation with the given precision.
+      @param {Object} e Arguments of the method.
+      @param {Object} e.latlng1 First point.
+      @param {Object} e.latlng2 Second point.
+      @returns {String} Textual representation of distance.
     */
     getDistanceText: function (e) {
       return this.getMeasureText({
@@ -370,7 +370,7 @@
   };
 
   /**
-    Примесь, обеспечивающая поддержку основных методов редактирования пути
+    (TRANSLATED) Admixture providing support for basic path editing methods
   */
   L.Measure.Mixin.Path = {
 
@@ -379,18 +379,18 @@
     },
 
     /**
-       Метод для получения числа вершин фигуры
-       @param {Object} layer Слой с геометрией, представляющей производимые измерения.
-       @returns {Number} Число вершин.
+       Method for getting the number of vertices of a shape
+       @param {Object} layer Layer with geometry representing the measurements.
+       @returns {Number} The number of vertices.
     */
     numberOfVertices: function (layer) {
       return this.getLatLngs(layer).length;
     },
 
     /**
-      Метод для получения периметра точек слоя
-      @param {Object} layer Слой с геометрией, представляющей производимые измерения.
-      @returns {Number} Периметр.
+      Method for getting perimeter of layer points
+      @param {Object} layer Layer with geometry representing the measurements.
+      @returns {Number} Perimeter.
     */
     _getPerimeter: function (latlngs) {
       var distance = 0;
@@ -421,9 +421,9 @@
     },
 
     /**
-      Метод для получения периметра точек слоя
-      @param {Object} layer Слой с геометрией, представляющей производимые измерения.
-      @returns {Number} String} Текстовое представление периметра.
+      Method for getting perimeter of layer points
+      @param {Object} layer Layer with geometry representing the measurements.
+      @returns {Number} String} The textual representation of the perimeter.
     */
     getPerimeterText: function (layer) {
       return this.getMeasureText({
@@ -435,12 +435,12 @@
   };
 
   /**
-    Примесь, обеспечивающая поддержку основных методов редактирования ломаной
+    An admixture that provides support for basic polyline editing methods
   */
   L.Measure.Mixin.Polyline = {};
 
   /**
-    Примесь, обеспечивающая поддержку основных методов редактирования многоугольника
+    Admixture providing support for basic polygon editing techniques
   */
   L.Measure.Mixin.Polygon = {
 
@@ -450,9 +450,9 @@
     },
 
     /**
-      Метод для получения периметра точек слоя
-      @param {Object} layer Слой с геометрией, представляющей производимые измерения.
-      @returns {Number} Периметр.
+      Method for getting perimeter of layer points
+      @param {Object} layer Layer with geometry representing the measurements.
+      @returns {Number} Perimeter.
     */
     getPerimeter: function (layer) {
       var latlngs = this.getLatLngs(layer).slice();
@@ -463,10 +463,10 @@
     },
 
     /**
-     * Вычисляет площадь многоугольника (в метрах) с заданной точностью.
-     * @param {Object} layer Слой с геометрией, представляющей производимые измерения.
-     * @param {Object} latlng Точка.
-     * @returns {Number} Полощадь многоугольника (в метрах).
+     * Calculates the area of the polygon (in meters) with the given accuracy.
+     * @param {Object} layer Layer with geometry representing the measurements.
+     * @param {Object} latlng Point.
+     * @returns {Number} Polygon area (in meters).
      */
     getArea: function (layer, latlng) {
       var latlngs = this.getLatLngs(layer).slice();
@@ -478,10 +478,10 @@
     },
 
     /**
-      Вычисляет площадь многоугольника возвращает её текстовое представление с заданной точностью.
-      @param {Object} layer Слой с геометрией, представляющей производимые измерения.
-      @param {Object} latlng Точка.
-      @returns {Number} Текстовое представление площади.
+      Calculates the area of a polygon; returns its textual representation with the given precision.
+      @param {Object} layer Layer with geometry representing the measurements.
+      @param {Object} latlng Point.
+      @returns {Number} Text representation of the area.
     */
     getAreaText: function (layer, latlng) {
       return this.getMeasureText({
@@ -491,10 +491,10 @@
     },
 
     /**
-      Вычисляет площадь многоугольника согласно релизации  https://github.com/openlayers/openlayers/blob/master/lib/OpenLayers/Geometry/LinearRing.js#L270*
-      Возможно требует доработок для многоугольников с пересекающимися гранями и составных многоугольников с дырами (Holes)
-      @param {Object} latLngs  Массив точек многоугольника.
-      @returns {Number} Полощадь многоугольника (в метрах).
+      Calculates the area of a polygon according to release https://github.com/openlayers/openlayers/blob/master/lib/OpenLayers/Geometry/LinearRing.js#L270*
+      Perhaps requires improvements for polygons with intersecting faces and composite polygons with holes (Holes)
+      @param {Object} latLngs  An array of polygon points.
+      @returns {Number} Polygon area (in meters).
     */
     geodesicArea: function (latLngs) {
       const DEG_TO_RAD = 0.017453292519943295;;
@@ -519,24 +519,24 @@
   };
 
   /**
-    Примесь, обеспечивающая поддержку основных методов редактирования прямоугольника
+    Admixture providing support for basic rectangle editing methods
   */
   L.Measure.Mixin.Rectangle = {};
 
   /**
-    Примесь, обеспечивающая поддержку основных методов редактирования прямоугольника
+    Admixture providing support for basic rectangle editing methods
   */
   L.Measure.Mixin.CircleMarker = {};
 
   /**
-    Примесь, обеспечивающая поддержку основных методов измерения круга
+    Admixture providing support for basic circle measurement methods
   */
   L.Measure.Mixin.Circle = {
 
     /**
-      Возвращает текстовое представление для радиуса с заданной точностью.
-      @param {Object} layer Слой с геометрией, представляющей производимые измерения.
-      @returns {Number} Текстовое представление радиуса.
+      Returns the textual representation for the radius with the specified precision.
+      @param {Object} layer Layer with geometry representing the measurements.
+      @returns {Number} The textual representation of the radius.
     */
     getRadiusText: function (layer) {
       var radius = layer.getRadius();
@@ -548,9 +548,9 @@
     },
 
     /**
-      Возвращает текстовое представление для диаметра с заданной точностью.
-      @param {Object} layer Слой с геометрией, представляющей производимые измерения.
-      @returns {String} Текстовое представление диаметра.
+      Returns a textual representation for the diameter with the specified precision.
+      @param {Object} layer Layer with geometry representing the measurements.
+      @returns {String} The textual representation of the diameter.
     */
     getDiameterText: function (layer) {
       return this.getMeasureText({
@@ -560,10 +560,10 @@
     },
 
     /**
-      Возвращает текстовое представление для периметра с заданной точностью.
-      TODO: УЧЕСТЬ СФЕРИЧНОСТЬ - ВОЗМОЖНО СТОИТ ПЕРЕВЕСТИ В МНОГОУГОЛЬНИК?
-      @param {Object} layer Слой с геометрией, представляющей производимые измерения.
-      @returns {String} Текстовое представление периметра.
+      Returns the textual representation for the perimeter with the specified precision.
+      TODO: LEARNING SPHERICALITY - MAYBE WANT TO TRANSFER TO A MULTIPOON?
+      @param {Object} layer Layer with geometry representing the measurements.
+      @returns {String} The textual representation of the perimeter.
     */
     getPerimeterText: function (layer) {
       return this.getMeasureText({
@@ -575,11 +575,11 @@
 
 
     /**
-    Возвращает текстовое представление площади круга с заданной точностью.
-    TODO - УЧЕСТЬ СФЕРИЧНОСТЬ - ВОЗМОЖНО СТОИТ ПЕРЕВЕСТИ В МНОГОУГОЛЬНИК?
-    @param {Object} e Аргументы метода.
-    @param {Object} e.radius Значение радиуса в метрах.
-    @returns {Number} Текстовое представление радиуса.
+    Returns a textual representation of the area of a circle with the specified precision.
+    TODO - LEARNING SPHERICALITY - MAYBE IT WANT TO TRANSFER TO A MULTIDAGON?
+    @param {Object} e Arguments of the method.
+    @param {Object} e.radius The value of the radius in meters.
+    @returns {Number} The textual representation of the radius.
       */
     getAreaText: function (layer) {
       var radius = layer.getRadius();
@@ -592,28 +592,28 @@
   };
 
   /**
-   Примесь, обеспечивающая поддержку событий измерения маркера
+   Admixture providing support for marker measurement events
    */
   L.Measure.Mixin.MarkerEvents = {
       /**
-      Метод, обеспечивающий в момент инициализации перехват основных событий редактирования
+      A method that ensures at the time of initialization the capture of the main editing events
 
-      Порядок событий в Leaflet.Editable:
+      Order of events in Leaflet.Editable:
 
-        До первого клика
+        Until the first click
           editable:created
           editable:enable
           editable:drawing:start
           editable:drawing:move
 
-        1-й клик  и последующие клики
+        1st click and subsequent clicks
           editable:created
           editable:drawing:mousedown
           editable:drawing:click
           editable:drawing:clicked
           editable:drawing:commit
           editable:drawing:end
-        Перетаскивание вершины:
+        Drag the top:
 
           editable:editing
           editable:dragstart
@@ -677,18 +677,18 @@
     },
 
     /**
-      Класс, обеспечивающая поддержку основных cобытий редактирования маркера
+      A class that provides support for major marker editing events
     */
     L.Measure.Marker = L.Class.extend({
       includes: [L.Measure.Mixin, L.Measure.Mixin.Marker, L.Measure.Mixin.MarkerEvents],
 
       popupText: {
-        move: 'Кликните по карте, чтобы зафиксировать маркер',
-        drag: 'Отпустите кнопку мыши, чтобы зафиксировать маркер'
+        move: 'Click on the map to fix the marker',
+        drag: 'Release the mouse button to lock the marker.'
       },
 
       /**
-        Инициализация режима перемщения маркера Marker
+        Initialize Marker Movement Mode
       */
       startMeasure: function (options) {
         this._setMouseMarker();
@@ -713,27 +713,27 @@
     });
 
   /**
-    Примесь, обеспечивающая поддержку событий измерения круга и прямоугольника
+    Impurity providing support for circle and rectangle measurement events
   */
   L.Measure.Mixin.CircleRectangleEvents = {
     /**
-      Метод, обеспечивающий в момент инициализации перехват основных событий редактирования
+      A method that ensures at the time of initialization the capture of the main editing events
 
-      Порядок событий в Leaflet.Editable:
-      До первого клика
+      Order of events in Leaflet.Editable:
+      Until the first click
           editable:enable
           editable:drawing:start
           editable:drawing:move
-        1-й клик
+        1st click
         editable:drawing:mousedown
           editable:drawing:commit
           editable:drawing:end
-        Перемещение, изменение размера круга
+        Move, resize circle
           editable:vertex:dragstart
           editable:drawing:move
           editable:vertex:drag
           editable:editing
-        Отпуск клавиши
+        Key Release
         editable:vertex:dragendmeasureLayer
     */
     setEvents: function (map, options) {
@@ -808,14 +808,14 @@
   };
 
   /**
-   Класс, обеспечивающий поддержку основных cобытий редактирования круга
+   A class that provides support for major circle editing events
    */
   L.Measure.Circle = L.Class.extend({
     includes: [L.Measure.Mixin, L.Measure.Mixin.Marker, , L.Measure.Mixin.Path, L.Measure.Mixin.CircleMarker, L.Measure.Mixin.Circle, L.Measure.Mixin.CircleRectangleEvents],
 
     popupText: {
-      move: 'Зажмите кнопку мыши и перемеcтите курсор, чтобы нарисовать круг',
-      drag: 'Отпустите кнопку мыши, чтобы зафиксировать круг.'
+      move: 'Hold down the mouse button and move the cursor to draw a circle',
+      drag: 'Release the mouse button to lock the circle.'
     },
 
     options: {
@@ -838,7 +838,7 @@
   });
 
   /**
-   Класс, обеспечивающий поддержку основных cобытий редактирования прямоугольника
+   A class that provides support for basic rectangle editing events.
    */
   L.Measure.Rectangle = L.Class.extend({
     includes: [L.Measure.Mixin,
@@ -847,8 +847,8 @@
     ],
 
     popupText: {
-      move: 'Зажмите кнопку мыши и перемеcтите курсор, чтобы нарисовать прямоугольник',
-      drag: 'Отпустите кнопку мыши, чтобы зафиксировать прямоугольник.'
+      move: 'Hold down the mouse button and move the cursor to draw a rectangle',
+      drag: 'Release the mouse button to fix the rectangle.'
     },
 
     options: {
@@ -870,19 +870,19 @@
   });
 
   /**
-  Примесь, обеспечивающая поддержку событий измерения ломаной и многоугольника
+  Impurity providing support for polyline and polygon measurement events
   */
   L.Measure.Mixin.PolylinePolygonEvents = {
     /**
-      Метод, обеспечивающий в момент инициализации перехват основных событий редактирования
+      A method that ensures at the time of initialization the capture of the main editing events
 
-      Порядок событий в Leaflet.Editable:
-        До первого клика
+      Order of events in Leaflet.Editable:
+        Until the first click
           editable:enable
           editable:shape:new
           editable:drawing:start
           editable:drawing:move
-        1-й клик и последующие клики
+        1st click and subsequent clicks
           editable:drawing:mousedown
           editable:drawing:click
           editable:editing
@@ -893,16 +893,16 @@
           editable:vertex:clicked
           editable:drawing:commit
           editable:drawing:end
-        Перетаскивание вершины:
+        Drag the top:
           editable:vertex:dragstart
           editable:drawing:move
           editable:vertex:dragend
-        Удаление вершины:
+        Removing a vertex:
           editable:vertex:click
           editable:vertex:rawclick_closePopup
           editable:vertex:deleted
           editable:vertex:clicked
-        Перетаскивание срединного маркера
+        Drag the middle marker
         editable:middlemarker:mousedown
         editable:vertex:dragstart
         editable:drawing:move
@@ -1009,16 +1009,16 @@
   };
 
   /**
-    Класс, обеспечивающий поддержку основных cобытий редактирования ломаной
+    A class that provides support for major events editing a polyline
   */
   L.Measure.Polyline = L.Class.extend({
     includes: [L.Measure.Mixin, L.Measure.Mixin.Marker, L.Measure.Mixin.Path, L.Measure.Mixin.Polyline, L.Measure.Mixin.PolylinePolygonEvents],
 
     popupText: {
-      move: 'Кликните по карте, чтобы добавить начальную вершину.',
-      add: 'Кликните по карте, чтобы добавить новую вершину.',
-      commit: 'Кликните на текущую вершину, чтобы зафиксировать линию',
-      drag: 'Отпустите курсор, чтобы  зафиксировать линию'
+      move: 'Click on the map to add the starting vertex.',
+      add: 'Click on the map to add a new vertex.',
+      commit: 'Click on the current vertex to fix the line',
+      drag: 'Release the cursor to lock the line.'
     },
 
     options: {
@@ -1039,16 +1039,16 @@
   });
 
   /**
-    Класс, обеспечивающий поддержку основных cобытий редактирования многоугольника
+    A class that provides support for major polygon editing events.
   */
   L.Measure.Polygon = L.Class.extend({
     includes: [L.Measure.Mixin, L.Measure.Mixin.Marker, L.Measure.Mixin.Path, L.Measure.Mixin.Polyline, L.Measure.Mixin.Polygon, L.Measure.Mixin.PolylinePolygonEvents],
 
     popupText: {
-      move: 'Кликните по карте, чтобы добавить начальную вершину.',
-      add: 'Кликните по карте, чтобы добавить новую вершину.',
-      commit: 'Кликните на текущую вершину, чтобы зафиксировать многоугольник',
-      drag: 'Отпустите курсор, чтобы  зафиксировать многоугольник'
+      move: 'Click on the map to add the starting vertex.',
+      add: 'Click on the map to add a new vertex.',
+      commit: 'Click on the current vertex to fix the polygon.',
+      drag: 'Release the cursor to fix the polygon.'
     },
 
     options: {
@@ -1071,42 +1071,42 @@
 
 
   /**
-    Фабричный метод для создания экземпляра инструмента измерения маркера.
+    Factory method for instantiating a marker measurement tool.
   */
   L.Measure.marker = function (map, options) {
     return new L.Measure.Marker(map, options);
   };
 
   /**
-    Фабричный метод для создания экземпляра инструмента измерения прямоугольника.
+    Factory method for instantiating a rectangle measurement tool.
   */
   L.Measure.rectangle = function (map, options) {
     return new L.Measure.Rectangle(map, options);
   };
 
   /**
-    Фабричный метод для создания экземпляра инструмента измерения круга.
+    Factory method for instantiating a circle measurement tool.
   */
   L.Measure.circle = function (map, options) {
     return new L.Measure.Circle(map, options);
   };
 
   /**
-    Фабричный метод для создания экземпляра инструмента измерения ломаной.
+    Factory method for instantiating a polyline measurement tool.
   */
   L.Measure.polyline = function (map, options) {
     return new L.Measure.Polyline(map, options);
   };
 
   /**
-    Фабричный метод для создания экземпляра инструмента измерения многоугольника.
+    Factory method for instantiating a polygon measurement tool.
   */
   L.Measure.polygon = function (map, options) {
     return new L.Measure.Polygon(map, options);
   };
 
   /*
-    Метод при наличии опции basemeasured добавляет к карте свойство measureTools с инициализированными свойстами:
+    If the basemeasured option is present, the method adds the measureTools property to the map with initialized properties:
     markerTool
     circleTool
     rectangleTool
@@ -1143,14 +1143,14 @@
   });
 
   /*
-    Фабричный метод для создания базового экземпляра.
+    The factory method for creating the base instance.
   */
   L.measureBase = function (map, options) {
     return new L.MeasureBase(map, options);
   };
 
   /**
-    Класс инструмента для измерения координат.
+    The class of the tool for measuring coordinates.
   */
   L.Measure.MarkerBase = L.Measure.Marker.extend({
 
@@ -1158,40 +1158,40 @@
       labelPrefix: '<b>',
       labelPostfix: '</b>',
       captions: {
-        northLatitude: ' с.ш. ',
-        southLatitude: ' ю.ш. ',
-        eastLongitude: ' в.д. ',
-        westLongitude: ' з.д. ',
+        northLatitude: ' N. ',
+        southLatitude: ' S. ',
+        eastLongitude: ' E. ',
+        westLongitude: ' W. ',
         x: 'X: ',
         y: 'Y: '
       }
     },
 
     /**
-      Количество знаков после десятичного разделителя для измерений в метрах.
+      The number of characters after the decimal separator for measurements in meters.
     */
     precision: 5,
 
     /*
-      Метод для получения маркеров инструмента редактирования, имеющих метки
-      @param {Object} editor Инструмент редактирования
-      @returns {Object[]} Массив помеченных маркеров инструмента редактирования.
+      Method for retrieving editing tool markers with labels
+      @param {Object} editor Editing tool
+      @returns {Object[]} An array of tagged marker editors.
     */
     _labelledMarkers: function (editor, e) {
       return [];
     },
 
     /*
-      Метод для получения маркеров инструмента редактирования, не имеющих меток
-      @param {Object} editor Инструмент редактирования
-      @returns {Object[]} Массив не помеченных маркеров инструмента редактирования.
+      Method for retrieving unmarked editing tool markers
+      @param {Object} editor Editing tool
+      @returns {Object[]} An array of unlabeled editors tokens.
     */
     _unlabelledMarkers: function (editor, e) {
       return [];
     },
 
     /**
-      Метод для получения текстового описания результатов измерений.
+      Method for obtaining a textual description of the measurement results.
     */
     _getLabelContent: function (layer, latlng, e) {
       var crs = this.options.crs;
@@ -1220,8 +1220,8 @@
     },
 
     /**
-      Метод обновления основного лейбла измеряемого объекта
-      @param {Object} layer Редактируемый слой.
+      Method for updating the main label of the measured object
+      @param {Object} layer Editable layer.
     */
     _updateMeasureLabel: function (layer, e) {
       if (this._getMeasureEventType(e).substr(-5) !== ':drag') {
@@ -1233,7 +1233,7 @@
   });
 
   /**
-    Фабричный метод для создания экземпляра инструмента измерения координат.
+    Factory method for instantiating a coordinate measurement tool.
   */
   L.Measure.markerBase = function (map, options) {
     return new L.Measure.MarkerBase(map, options);
@@ -1241,18 +1241,18 @@
 
 
   /**
-    Класс инструмента для измерения радиуса.
+    The class of the tool for measuring radius.
   */
   L.Measure.CircleBase = L.Measure.Circle.extend({
 
     basePopupText: {
-      labelPrefix: '<b>Радиус: ',
+      labelPrefix: '<b>Radius: ',
       labelPostfix: '</b>',
     },
     /*
-     Метод для получения маркеров инструмента редактирования, имеющих метки
-     @param {Object} editor Инструмент редактирования
-     @returns {Object[]} Массив помеченных маркеров инструмента редактирования.
+     Method for retrieving editing tool markers with labels
+     @param {Object} editor Editing tool
+     @returns {Object[]} An array of tagged marker editors.
     */
     _labelledMarkers: function (editor, e) {
       var latlngs = editor.getLatLngs();
@@ -1269,9 +1269,9 @@
     },
 
     /*
-      Метод для получения маркеров инструмента редактирования, не имеющих меток
-      @param {Object} editor Инструмент редактирования
-      @returns {Object[]} Массив не помеченных маркеров инструмента редактирования.
+      Method for retrieving unmarked editing tool markers
+      @param {Object} editor Editing tool
+      @returns {Object[]} An array of unlabeled editors tokens.
     */
     _unlabelledMarkers: function (editor, e) {
       var latlngs = editor.getLatLngs();
@@ -1289,9 +1289,9 @@
 
 
     /**
-      Метод для получения текстового описания результатов измерений.
-      @param {Object} layer Слой с геометрией, представляющей производимые измерения.
-      @param {Object} latlng Точка геометрии, для которой требуется получить текстовое описание измерений.
+      Method for obtaining a textual description of the measurement results.
+      @param {Object} layer Layer with geometry representing the measurements.
+      @param {Object} latlng The geometry point for which you want to get a textual description of the dimensions.
     */
     _getLabelContent: function (layer, latlng, e) {
       var radiusText = this.getRadiusText(layer);
@@ -1302,21 +1302,21 @@
   });
 
   /**
-    Фабричный метод для создания экземпляра инструмента измерения радиуса.
+    Factory method for instantiating a radius measurement tool.
   */
   L.Measure.circleBase = function (map, options) {
     return new L.Measure.CircleBase(map, options);
   };
 
   /**
-    Класс инструмента для измерения площади прямоугольника.
+    The class of a tool for measuring the area of a rectangle.
   */
   L.Measure.RectangleBase = L.Measure.Rectangle.extend({
 
     /*
-      Метод для получения маркеров инструмента редактирования, имеющих метки
-      @param {Object} editor Инструмент редактирования
-      @returns {Object[]} Массив помеченных маркеров инструмента редактирования.
+      Method for retrieving editing tool markers with labels
+      @param {Object} editor Editing tool
+      @returns {Object[]} An array of tagged marker editors.
     */
     _labelledMarkers: function (editor) {
       var latlngs = editor.getLatLngs()[0];
@@ -1325,9 +1325,9 @@
     },
 
     /*
-      Метод для получения маркеров инструмента редактирования, не имеющих меток
-      @param {Object} editor Инструмент редактирования
-      @returns {Object[]} Массив не помеченных маркеров инструмента редактирования.
+      Method for retrieving unmarked editing tool markers
+      @param {Object} editor Editing tool
+      @returns {Object[]} An array of unlabeled editors tokens.
     */
     _unlabelledMarkers: function (editor) {
       var latlngs = editor.getLatLngs()[0];
@@ -1339,17 +1339,17 @@
     },
 
     /**
-      Метод для получения текстового описания результатов измерений.
-      @param {Object} layer Слой с геометрией, представляющей производимые измерения.
-      @param {Object} latlng Точка геометрии, для которой требуется получить текстовое описание измерений.
+      Method for obtaining a textual description of the measurement results.
+      @param {Object} layer Layer with geometry representing the measurements.
+      @param {Object} latlng The geometry point for which you want to get a textual description of the dimensions.
     */
     _getLabelContent: function (layer, latlng) {
       return '';
     },
 
     /**
-      Метод обновления основного лейбла измеряемого объекта
-      @param {Object} layer Редактируемый слой.
+      Method for updating the main label of the measured object
+      @param {Object} layer Editable layer.
     */
     _updateMeasureLabel: function (layer, e) {
       var center = layer.getCenter();
@@ -1362,7 +1362,7 @@
   });
 
   /**
-   *   Фабричный метод для создания экземпляра инструмента измерения площади прямоугольника.
+   *  Factory method for creating an instance of a rectangle’s area measurement tool.
    */
   L.Measure.rectangleBase = function (map, options) {
     return new L.Measure.RectangleBase(map, options);
@@ -1370,7 +1370,7 @@
 
 
   /**
-   * Класс инструмента для измерения длины.
+   * Class of tool for measuring length.
    */
   L.Measure.PolylineBase = L.Measure.Polyline.extend({
 
@@ -1382,7 +1382,7 @@
     },
 
     /*
-      Метод для получения маркеров инструмента редактирования, имеющих метки
+      Method for retrieving editing tool markers with labels
       @param {Object} editor Инструмент редактирования
       @returns {Object[]} Массив помеченных маркеров инструмента редактирования.
     */
@@ -1408,9 +1408,9 @@
     },
 
     /*
-      Метод для получения маркеров инструмента редактирования, не имеющих меток.
-      @param {Object} editor Инструмент редактирования.
-      @returns {Object[]} Массив не помеченных маркеров инструмента редактирования.
+      A method for retrieving unmarked editing tool markers.
+      @param {Object} editor Editing tool.
+      @returns {Object[]} An array of unlabeled editors tokens.
     */
     _unlabelledMarkers: function (editor, e) {
       var latlngs = editor.getLatLngs();
@@ -1430,10 +1430,10 @@
     },
 
     /**
-      Метод для получения текстового описания результатов измерений.
-      @param {Object} layer Слой с геометрией, представляющей производимые измерения.
-      @param {Object} latlng Точка геометрии, для которой требуется получить текстовое описание измерений.
-      @param {Object} e Аргументы метода.
+      Method for obtaining a textual description of the measurement results.
+      @param {Object} layer Layer with geometry representing the measurements.
+      @param {Object} latlng The geometry point for which you want to get a textual description of the dimensions.
+      @param {Object} e Arguments of the method.
     */
     _getLabelContent: function (layer, latlng, e) {
       var latlngs = layer.editor.getLatLngs().slice();
@@ -1475,26 +1475,26 @@
   });
 
   /**
-    Фабричный метод для создания экземпляра инструмента измерения длины.
+    Factory method for instantiating a length measurement tool.
   */
   L.Measure.polylineBase = function (map, options) {
     return new L.Measure.PolylineBase(map, options);
   };
 
   /**
-    Класс инструмента для измерения площади.
+    Class tool for measuring area.
   */
   L.Measure.PolygonBase = L.Measure.Polygon.extend({
 
     basePopupText: {
-      labelPrefix: '<b>Площадь: ',
+      labelPrefix: '<b>Area: ',
       labelPostfix: '</b>',
     },
 
     /*
-      Метод для получения маркеров инструмента редактирования, имеющих метки
-      @param {Object} editor Инструмент редактирования
-      @returns {Object[]} Массив помеченных маркеров инструмента редактирования.
+      Method for retrieving editing tool markers with labels
+      @param {Object} editor Editing tool
+      @returns {Object[]} An array of tagged marker editors.
     */
     _labelledMarkers: function (editor, e) {
       var latlngs = editor.getLatLngs()[0];
@@ -1519,9 +1519,9 @@
     },
 
     /*
-      Метод для получения маркеров инструмента редактирования, не имеющих меток
-      @param {Object} editor Инструмент редактирования
-      @returns {Object[]} Массив не помеченных маркеров инструмента редактирования.
+      Method for retrieving unmarked editing tool markers
+      @param {Object} editor Editing tool
+      @returns {Object[]} An array of unlabeled editors tokens.
     */
     _unlabelledMarkers: function (editor, e) {
       var latlngs = editor.getLatLngs()[0];
@@ -1549,11 +1549,11 @@
     },
 
     /**
-      Метод для получения текстового описания результатов измерений.
-      @param {Object} layer Слой с геометрией, представляющей производимые измерения.
-      @param {Object} latlng Точка геометрии, для которой требуется получить текстовое описание измерений.
-      @param {Object} e Аргументы метода.
-      @returns {String} Содержимое метки
+      Method for obtaining a textual description of the measurement results.
+      @param {Object} layer Layer with geometry representing the measurements.
+      @param {Object} latlng The geometry point for which you want to get a textual description of the dimensions.
+      @param {Object} e Arguments of the method.
+      @returns {String} Tag content
     */
     _getLabelContent: function (layer, latlng, e) {
       var latlngs = layer.editor.getLatLngs()[0].slice();
@@ -1575,14 +1575,14 @@
   });
 
   /**
-   Фабричный метод для создания экземпляра инструмента измерения площади.
+   Factory method for creating an instance of an area measurement tool.
    */
   L.Measure.polygonBase = function (map, options) {
     return new L.Measure.PolygonBase(map, options);
   };
 
   /*
-    Метод при наличии опции basemeasured добавляет к карте свойство measureTools с инициализированными свойстами:
+    If the basemeasured option is present, the method adds the measureTools property to the map with initialized properties:
     markerBaseTool
     circleBaseTool
     rectangleBaseTool

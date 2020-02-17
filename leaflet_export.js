@@ -6,11 +6,11 @@
       });
       if (!('exportError' in this)) {
         this.exportError = {
-          wrongBeginSelector: 'Селектор JQuery не имеет начальной скобки (',
-          wrongEndSelector: 'Селектор JQuery не заканчивается скобкой )',
-          jqueryNotAvailable: 'В опциях используется JQuery селектор, но JQuery не подключен.Подключите JQuery или используйте DOM-селекторы .class, #id или DOM-элементы',
-          popupWindowBlocked: 'Окно печати было заблокировано браузером. Пожалуйста разрешите всплывающие окна на этой странице',
-          emptyFilename: 'При выгрузке карты в виде файла не указано его имя'
+          wrongBeginSelector: 'JQuery selector does not have an initial bracket (',
+          wrongEndSelector: 'JQuery selector does not end with parenthesis )',
+          jqueryNotAvailable: 'The options use a jQuery selector, but jQuery is not available. Connect jQuery or use the DOM selectors .class, #id or DOM elements',
+          popupWindowBlocked: 'The print window was blocked by the browser. Please allow pop-ups on this page.',
+          emptyFilename: 'The unloaded map file name is empty'
         };
       }
 
